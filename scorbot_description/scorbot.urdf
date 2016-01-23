@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+<robot name="scorbot">
+
+<material name="blue">
+    <color rgba="0 0 .8 0.7"/>
+  </material>
+  <material name="red">
+    <color rgba="1 0 0 0.7"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 1 0.7"/>
+  </material>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/base.stl" />
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/base.stl" />
+      </geometry>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+
+  <link name="body">
+    <visual>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/body.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0.014 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/body.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0.014 0"/>
+    </collision>
+  </link>
+
+  <joint name="base_to_body" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1.0" lower="-2.70526" upper="2.70526" velocity="2"/>
+    <parent link="base_link"/>
+    <child link="body"/>
+    <origin rpy="1.57075 0 0" xyz="0 0.007 0"/>
+  </joint>
+
+  <link name="upper_arm">
+    <visual>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/upper_arm.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/upper_arm.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+
+
+  <joint name="body_to_upper_arm" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1.0" lower="-2.26893" upper="0.610865" velocity="2"/>
+    <parent link="body"/>
+    <child link="upper_arm"/>
+    <origin xyz="0 0.1438 0.019"/>
+  </joint>
+
+  <link name="fore_arm">
+    <visual>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/fore_arm.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/fore_arm.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+
+
+  <joint name="upper_arm_to_fore_arm" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1.0" lower="-2.26893" upper="2.26893" velocity="2"/>
+    <parent link="upper_arm"/>
+    <child link="fore_arm"/>
+    <origin xyz="0 0 0.223"/>
+  </joint>
+
+  <link name="wrist_x">
+    <visual>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/wrist_x.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/wrist_x.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+
+
+  <joint name="fore_arm_to_wrist_x" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="1.0" lower="-2.26893" upper="2.26893" velocity="2"/>
+    <parent link="fore_arm"/>
+    <child link="wrist_x"/>
+    <origin xyz="0 0 0.2215"/>
+  </joint>
+
+  <link name="wrist_z">
+    <visual>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/wrist_z.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/wrist_z.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>    
+  </link>
+
+
+  <joint name="wrist_x_to_wrist_z" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1.0" lower="-3.14" upper="3.14" velocity="2"/>
+    <parent link="wrist_x"/>
+    <child link="wrist_z"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <link name="gripper_left">
+    <visual>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/gripper_left.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/gripper_left.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+
+
+  <joint name="wrist_z_to_gripper_left" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1.0" lower="-1.13446" upper="1.13446" velocity="2"/>
+    <parent link="wrist_z"/>
+    <child link="gripper_left"/>
+    <origin xyz="-0.032 0 0.0745"/>
+  </joint>
+
+    <link name="gripper_right">
+    <visual>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/gripper_right.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://testbot_description/urdf/meshes/gripper_right.stl" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </collision>
+  </link>
+
+
+  <joint name="wrist_z_to_gripper_right" type="revolute">
+    <axis xyz="0 -1 0"/>
+    <limit effort="1.0" lower="-1.13446" upper="1.13446" velocity="2"/>
+    <parent link="wrist_z"/>
+    <child link="gripper_right"/>
+    <origin xyz="0.032 0 0.0745"/>
+  </joint>
+ </robot>

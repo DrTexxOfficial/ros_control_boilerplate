@@ -18,7 +18,20 @@ find_package(catkin REQUIRED COMPONENTS
   control_toolbox
   std_msgs
   sensor_msgs
+  message_generation
 )
+
+## Generate services in the 'srv' folder
+ add_service_files(
+   FILES
+   write_joint_cmd.srv
+   read_joint_states.srv	
+ )
+
+ generate_messages(
+   DEPENDENCIES
+   std_msgs
+ )
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 find_package(Gflags REQUIRED)
@@ -95,6 +108,10 @@ set_target_properties(${PROJECT_NAME}_test_trajectory PROPERTIES OUTPUT_NAME tes
 target_link_libraries(${PROJECT_NAME}_test_trajectory
   ${catkin_LIBRARIES}
 )
+
+add_executable(read_joint_states_client src/communication_test.cpp)
+target_link_libraries(read_joint_states_client ${catkin_LIBRARIES})
+
 
 ## TOOLS ------------------------------------------------------
 

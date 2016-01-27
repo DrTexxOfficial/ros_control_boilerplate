@@ -39,6 +39,7 @@
 #include <ros_control_boilerplate/generic_hw_control_loop.h>
 #include <scorbot_control/scorbot_hw_interface.h>
 
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "scorbot_hw_interface");
@@ -48,6 +49,8 @@ int main(int argc, char** argv)
   // as service callbacks to load controllers can block the (main) control loop
   ros::AsyncSpinner spinner(2);
   spinner.start();
+
+
 
   // Create the hardware interface specific to your robot
   boost::shared_ptr<scorbot_control::ScorbotHWInterface> scorbot_hw_interface

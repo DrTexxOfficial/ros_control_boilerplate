@@ -13,6 +13,11 @@ int main(int argc, char **argv)
   if (client.call(srv))
   {
     ROS_INFO("Joint0: %f", (float)srv.response.joint0);
+    ROS_INFO("Joint1: %f", (float)srv.response.joint1);
+    ROS_INFO("Joint2: %f", (float)srv.response.joint2);
+    ROS_INFO("Joint3: %f", (float)srv.response.joint3);
+    ROS_INFO("Joint4: %f", (float)srv.response.joint4);
+
   }
   else
   {

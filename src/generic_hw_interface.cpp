@@ -39,6 +39,7 @@
 #include <ros_control_boilerplate/generic_hw_interface.h>
 #include <limits>
 
+
 namespace ros_control_boilerplate
 {
 GenericHWInterface::GenericHWInterface(ros::NodeHandle &nh, urdf::Model *urdf_model)
@@ -54,7 +55,6 @@ GenericHWInterface::GenericHWInterface(ros::NodeHandle &nh, urdf::Model *urdf_mo
   // Initialize shared memory and interfaces here
   // NEW: call this function separately
   //init();  // this implementation loads from rosparam
-
   ROS_INFO_NAMED("generic_hw_interface", "GenericHWInterface Ready.");
 }
 

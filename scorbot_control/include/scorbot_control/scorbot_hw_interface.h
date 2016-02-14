@@ -40,8 +40,10 @@
 #ifndef SCORBOT_CONTROL__SCORBOT_HW_INTERFACE_H
 #define SCORBOT_CONTROL__SCORBOT_HW_INTERFACE_H
 
+#include <ros/ros.h>
 #include <ros_control_boilerplate/generic_hw_interface.h>
-
+#include <ros_control_boilerplate/scorbot_joint_states.h>
+#include <ros_control_boilerplate/scorbot_joint_cmd.h>    
 namespace scorbot_control
 {
 
@@ -55,6 +57,8 @@ public:
    */
   ScorbotHWInterface(ros::NodeHandle& nh, urdf::Model* urdf_model = NULL);
 
+  void scorbot_Callback(const ros_control_boilerplate::scorbot_joint_states::ConstPtr &msg);
+
   /** \brief Read the state from the robot hardware. */
   virtual void read(ros::Duration &elapsed_time);
 
@@ -63,7 +67,13 @@ public:
 
   /** \breif Enforce limits for all values before writing */
   virtual void enforceLimits(ros::Duration &period);
+  bool new_data_ready_;
 
+private:
+  ros::Publisher joint_cmd_pub_;
+  ros::Subscriber joint_states_sub_;
+  ros_control_boilerplate::scorbot_joint_cmd scorbot_output_msg_; 
+  ros_control_boilerplate::scorbot_joint_states scorbot_input_msg_;  
 };  // class
 
 }  // namespace

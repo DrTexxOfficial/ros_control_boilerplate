@@ -22,12 +22,17 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## Generate services in the 'srv' folder
- add_service_files(
-   FILES
-   write_joint_cmd.srv
-   read_joint_states.srv	
- )
+# add_service_files(
+#   FILES
+#   write_joint_cmd.srv
+#   read_joint_states.srv	
+# )
 
+add_message_files(
+  FILES
+  scorbot_joint_states.msg
+  scorbot_joint_cmd.msg	
+)
  generate_messages(
    DEPENDENCIES
    std_msgs

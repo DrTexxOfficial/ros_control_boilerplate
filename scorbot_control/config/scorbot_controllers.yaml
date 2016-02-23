@@ -48,11 +48,11 @@ effort_trajectory_controller:
           trajectory: 0.30
           goal:       0.10                    
    gains:
-       base_to_body:          {p: 2.0,  i: 0.0, d: 0.01, i_clamp: 1}
-       body_to_upper_arm:     {p: 2.0,  i: 0.0, d: 0.01, i_clamp: 1}
-       upper_arm_to_fore_arm: {p: 2.0,  i: 0.0, d: 0.01, i_clamp: 1}
-       fore_arm_to_wrist_x:   {p: 2.0,  i: 0.0, d: 0.01, i_clamp: 1}
-       wrist_x_to_wrist_z:    {p: 2.0,  i: 0.0, d: 0.01, i_clamp: 1}
+       base_to_body:          {p: 20.0,  i: 0.0, d: 0.1, i_clamp: 1}
+       body_to_upper_arm:     {p: 20.0,  i: 0.0, d: 0.1, i_clamp: 1}
+       upper_arm_to_fore_arm: {p: 20.0,  i: 0.0, d: 0.1, i_clamp: 1}
+       fore_arm_to_wrist_x:   {p: 20.0,  i: 0.0, d: 0.1, i_clamp: 1}
+       wrist_x_to_wrist_z:    {p: 20.0,  i: 0.0, d: 0.1, i_clamp: 1}
 
     # state_publish_rate:  50 # Defaults to 50
     # action_monitor_rate: 20 # Defaults to 20

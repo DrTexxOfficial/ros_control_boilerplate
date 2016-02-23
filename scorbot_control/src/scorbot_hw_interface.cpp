@@ -87,11 +87,17 @@ void ScorbotHWInterface::write(ros::Duration &elapsed_time)
   //
   // FILL IN YOUR WRITE COMMAND TO USB/ETHERNET/ETHERCAT/SERIAL ETC HERE
   
-  scorbot_output_msg_.cmd0 = joint_position_command_[0]; //sending the commands
-  scorbot_output_msg_.cmd1 = joint_position_command_[1];
-  scorbot_output_msg_.cmd2 = joint_position_command_[2];
-  scorbot_output_msg_.cmd3 = joint_position_command_[3];
-  scorbot_output_msg_.cmd4 = joint_position_command_[4];
+  // scorbot_output_msg_.cmd0 = joint_position_command_[0]; //sending the commands
+  // scorbot_output_msg_.cmd1 = joint_position_command_[1];
+  // scorbot_output_msg_.cmd2 = joint_position_command_[2];
+  // scorbot_output_msg_.cmd3 = joint_position_command_[3];
+  // scorbot_output_msg_.cmd4 = joint_position_command_[4];
+  scorbot_output_msg_.cmd0 = joint_effort_command_[0]; //sending the commands
+  scorbot_output_msg_.cmd1 = joint_effort_command_[1];
+  scorbot_output_msg_.cmd2 = joint_effort_command_[2];
+  scorbot_output_msg_.cmd3 = joint_effort_command_[3];
+  scorbot_output_msg_.cmd4 = joint_effort_command_[4];
+  
   joint_cmd_pub_.publish(scorbot_output_msg_);
   
   // FOR A EASY SIMULATION EXAMPLE, OR FOR CODE TO CALCULATE

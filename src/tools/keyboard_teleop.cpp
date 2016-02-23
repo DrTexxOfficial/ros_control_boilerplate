@@ -44,6 +44,8 @@
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include <std_msgs/Float64MultiArray.h>
+#include <ros_control_boilerplate/scorbot_joint_states.h>
+#include <ros_control_boilerplate/scorbot_joint_cmd.h>
 
 #define KEYCODE_a 0x61
 #define KEYCODE_b 0x62
@@ -91,27 +93,34 @@ public:
   {
     std::cout << "init " << std::endl;
     // TODO: make this robot agonistic
-    joints_sub_ = nh_.subscribe<sensor_msgs::JointState>("/iiwa_7_r800/joint_states", 1,
-                                                         &TeleopJointsKeyboard::stateCallback, this);
-    joints_pub_ = nh_.advertise<std_msgs::Float64MultiArray>("/iiwa_7_r800/joints_position_controller/command", 1);
-    cmd_.data.resize(7);
+    joints_sub_ = nh_.subscribe<ros_control_boilerplate::scorbot_joint_states>("/scorbot_arduino_states", 1,&TeleopJointsKeyboard::stateCallback, this);
+
+    joints_pub_ = nh_.advertise<ros_control_boilerplate::scorbot_joint_cmd>("/scorbot_arduino_cmd", 1);
+    
+    //cmd_.data.resize(7);
   }
 
   ~TeleopJointsKeyboard()
   { }
 
-  void stateCallback(const sensor_msgs::JointStateConstPtr& msg)
+  void stateCallback(const ros_control_boilerplate::scorbot_joint_states::ConstPtr &msg)
   {
-    if(msg->position.size() != 7)
-    {
-      ROS_ERROR_STREAM("Not enough joints!");
-      exit(-1);
-    }
+    // if(msg->position.size() != 7)
+    // {
+    //   ROS_ERROR_STREAM("Not enough joints!");
+    //   exit(-1);
+    // }
 
     // Copy latest joint positions to our output message
     if (!has_recieved_joints_)
-      cmd_.data = msg->position;
-
+    {
+    cmd_.cmd0 = 0;
+    cmd_.cmd1 = 0;
+    cmd_.cmd2 = 0;
+    cmd_.cmd3 = 0;
+    cmd_.cmd4 = 0;
+    }
+    
     // Debug
     //std::copy(cmd_.data.begin(), cmd_.data.end(), std::ostream_iterator<double>(std::cout, " "));
     //std::cout << std::endl;
@@ -141,11 +150,11 @@ public:
     puts("Use 'ED' to for joint 3");
     puts("Use 'RF' to for joint 4");
     puts("Use 'TG' to for joint 5");
-    puts("Use 'YH' to for joint 6");
-    puts("Use 'UJ' to for joint 7");
+    // puts("Use 'YH' to for joint 6");
+    // puts("Use 'UJ' to for joint 7");
     puts("ESC to end");
 
-    double delta_dist = 0.005;
+    float delta_dist = 240;
 
     for(;;)
     {
@@ -160,53 +169,100 @@ public:
       switch(c)
       {
         case KEYCODE_q:
-          cmd_.data[0] = cmd_.data[0] + delta_dist; // radians
+          cmd_.cmd0 = delta_dist;
+          cmd_.cmd1 = 0;
+          cmd_.cmd2 = 0;
+          cmd_.cmd3 = 0;
+          cmd_.cmd4 = 0; 
           break;
         case KEYCODE_a:
-          cmd_.data[0] = cmd_.data[0] - delta_dist; // radians
+          cmd_.cmd0 = -1 * delta_dist;
+          cmd_.cmd1 = 0;
+          cmd_.cmd2 = 0;
+          cmd_.cmd3 = 0;
+          cmd_.cmd4 = 0; 
           break;
 
         case KEYCODE_w:
-          cmd_.data[1] = cmd_.data[1] + delta_dist; // radians
+          cmd_.cmd1 = delta_dist;
+          cmd_.cmd0 = 0;
+          cmd_.cmd2 = 0;
+          cmd_.cmd3 = 0;
+          cmd_.cmd4 = 0; 
           break;
         case KEYCODE_s:
-          cmd_.data[1] = cmd_.data[1] - delta_dist; // radians
+          cmd_.cmd1 = -1 * delta_dist; 
+          cmd_.cmd0 = 0;
+          cmd_.cmd2 = 0;
+          cmd_.cmd3 = 0;
+          cmd_.cmd4 = 0; 
+
           break;
 
         case KEYCODE_e:
-          cmd_.data[2] = cmd_.data[2] + delta_dist; // radians
+          cmd_.cmd2 = delta_dist; 
+          cmd_.cmd1 = 0;
+          cmd_.cmd0 = 0;
+          cmd_.cmd3 = 0;
+          cmd_.cmd4 = 0; 
+
           break;
         case KEYCODE_d:
-          cmd_.data[2] = cmd_.data[2] - delta_dist; // radians
+           cmd_.cmd2 = -1 * delta_dist;
+          cmd_.cmd1 = 0;
+          cmd_.cmd0 = 0;
+          cmd_.cmd3 = 0;
+          cmd_.cmd4 = 0; 
+
           break;
 
         case KEYCODE_r:
-          cmd_.data[3] = cmd_.data[3] + delta_dist; // radians
+          cmd_.cmd3 = delta_dist;
+          cmd_.cmd1 = 0;
+          cmd_.cmd2 = 0;
+          cmd_.cmd0 = 0;
+          cmd_.cmd4 = 0; 
+ 
           break;
         case KEYCODE_f:
-          cmd_.data[3] = cmd_.data[3] - delta_dist; // radians
+           cmd_.cmd3 = -1 * delta_dist;
+                     cmd_.cmd1 = 0;
+          cmd_.cmd2 = 0;
+          cmd_.cmd0 = 0;
+          cmd_.cmd4 = 0; 
+ 
           break;
 
         case KEYCODE_t:
-          cmd_.data[4] = cmd_.data[4] + delta_dist; // radians
+          cmd_.cmd4 = delta_dist;
+                    cmd_.cmd1 = 0;
+          cmd_.cmd2 = 0;
+          cmd_.cmd3 = 0;
+          cmd_.cmd0 = 0; 
+
           break;
         case KEYCODE_g:
-          cmd_.data[4] = cmd_.data[4] - delta_dist; // radians
+           cmd_.cmd4 = -1 * delta_dist;
+                     cmd_.cmd1 = 0;
+          cmd_.cmd2 = 0;
+          cmd_.cmd3 = 0;
+          cmd_.cmd0 = 0; 
+ 
           break;
 
-        case KEYCODE_y:
-          cmd_.data[5] = cmd_.data[5] + delta_dist; // radians
-          break;
-        case KEYCODE_h:
-          cmd_.data[5] = cmd_.data[5] - delta_dist; // radians
-          break;
+        // case KEYCODE_y:
+        //   cmd_.data[5] = cmd_.data[5] + delta_dist; // radians
+        //   break;
+        // case KEYCODE_h:
+        //   cmd_.data[5] = cmd_.data[5] - delta_dist; // radians
+        //   break;
 
-        case KEYCODE_u:
-          cmd_.data[6] = cmd_.data[6] + delta_dist; // radians
-          break;
-        case KEYCODE_j:
-          cmd_.data[6] = cmd_.data[6] - delta_dist; // radians
-          break;
+        // case KEYCODE_u:
+        //   cmd_.data[6] = cmd_.data[6] + delta_dist; // radians
+        //   break;
+        // case KEYCODE_j:
+        //   cmd_.data[6] = cmd_.data[6] - delta_dist; // radians
+        //   break;
 
         case  KEYCODE_ESCAPE:
           std::cout << std::endl;
@@ -239,7 +295,7 @@ private:
   ros::NodeHandle nh_;
   ros::Publisher joints_pub_;
   ros::Subscriber joints_sub_;
-  std_msgs::Float64MultiArray cmd_;
+  ros_control_boilerplate::scorbot_joint_cmd cmd_; 
   bool has_recieved_joints_;
 
 };
